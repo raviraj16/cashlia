@@ -1,0 +1,67 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sync Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Cloud Sync</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-radio-group [(ngModel)]="syncMethod" (ionChange)="selectSyncMethod($event.detail.value)">
+            <ion-item>
+              <ion-label>No Sync</ion-label>
+              <ion-radio slot="start" value="none"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Google Drive</ion-label>
+              <ion-radio slot="start" value="google_drive"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Firestore</ion-label>
+              <ion-radio slot="start" value="firestore"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+
+        <ion-button
+          expand="block"
+          (click)="syncNow()"
+          [disabled]="syncMethod === 'none' || syncStatus === 'syncing'"
+          class="ion-margin-top"
+        >
+          <ion-icon name="sync" slot="start"></ion-icon>
+          Sync Now
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="danger"
+          (click)="disconnectSync()"
+          [disabled]="syncMethod === 'none'"
+          class="ion-margin-top"
+        >
+          Disconnect Sync
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="lastSyncTime">
+      <ion-card-header>
+        <ion-card-title>Last Sync</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ lastSyncTime | date:'short' }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

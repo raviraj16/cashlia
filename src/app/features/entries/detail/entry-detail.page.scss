@@ -1,0 +1,45 @@
+ion-card img {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.change-details {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.change-item {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background: var(--ion-color-light);
+  border-radius: 4px;
+  
+  p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+  }
+  
+  strong {
+    color: var(--ion-color-primary);
+  }
+}
+
+.old-value {
+  color: var(--ion-color-danger);
+  text-decoration: line-through;
+  opacity: 0.8;
+}
+
+.new-value {
+  color: var(--ion-color-success);
+  font-weight: 500;
+}
+
+.log-time {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+}
+

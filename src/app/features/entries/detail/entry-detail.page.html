@@ -1,0 +1,119 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Entry Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="editEntry()">
+        <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="deleteEntry()" color="danger">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" *ngIf="entry">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon [name]="entry.type === 'cash_in' ? 'arrow-down-circle' : 'arrow-up-circle'"
+                  [color]="entry.type === 'cash_in' ? 'success' : 'danger'"></ion-icon>
+        {{ formatCurrency(entry.amount) }}
+      </ion-card-title>
+      <ion-card-subtitle>
+        {{ entry.type === 'cash_in' ? 'Cash In' : 'Cash Out' }}
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <h3>Date & Time</h3>
+            <p>{{ formatDate(entry.date_time) }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3>Payment Mode</h3>
+            <p>{{ entry.payment_mode | titlecase }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="party">
+          <ion-label>
+            <h3>Party/Customer</h3>
+            <p>{{ party.name }}</p>
+            <p *ngIf="party.phone" class="ion-text-wrap">{{ party.phone }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="category">
+          <ion-label>
+            <h3>Category</h3>
+            <p>{{ category.name }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="entry.remarks">
+          <ion-label>
+            <h3>Remarks</h3>
+            <p>{{ entry.remarks }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>
+            <h3>Created</h3>
+            <p>{{ formatDate(entry.created_at) }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item *ngIf="entry.updated_at !== entry.created_at">
+          <ion-label>
+            <h3>Last Updated</h3>
+            <p>{{ formatDate(entry.updated_at) }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="attachmentPreview">
+    <ion-card-header>
+      <ion-card-title>Attachment</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <img [src]="attachmentPreview" alt="Attachment" />
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="activityLogs.length > 0">
+    <ion-card-header>
+      <ion-card-title>Activity Log</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let log of activityLogs">
+          <ion-label>
+            <h3>{{ log.action | titlecase }}</h3>
+            <div *ngIf="hasChangeDetails(log)" class="change-details">
+              <div *ngFor="let change of parseActivityLogDetails(log)!.changes" class="change-item">
+                <p><strong>{{ change.field }}:</strong></p>
+                <p class="old-value">Old: {{ change.oldValue }}</p>
+                <p class="new-value">New: {{ change.newValue }}</p>
+              </div>
+            </div>
+            <p *ngIf="!hasChangeDetails(log) && log.details">{{ log.details }}</p>
+            <p class="log-time">{{ formatDate(log.created_at) }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

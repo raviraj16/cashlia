@@ -1,0 +1,146 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <div>
+        <div>Entries</div>
+        <div *ngIf="currentBook" class="subtitle">{{ currentBook.name }}</div>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openFilters()">
+        <ion-icon name="filter" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button (click)="createEntry()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        <div>
+          <div>Entries</div>
+          <div *ngIf="currentBook" class="subtitle">{{ currentBook.name }}</div>
+        </div>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Summary Section -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Summary</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <ion-label color="primary">Net Balance</ion-label>
+          <h2 [class.positive]="summary.netBalance >= 0" [class.negative]="summary.netBalance < 0">
+            {{ formatCurrency(summary.netBalance) }}
+          </h2>
+        </div>
+        <div class="summary-item">
+          <ion-label color="success">Total Cash In</ion-label>
+          <h2 class="positive">{{ formatCurrency(summary.totalCashIn) }}</h2>
+        </div>
+        <div class="summary-item">
+          <ion-label color="danger">Total Cash Out</ion-label>
+          <h2 class="negative">{{ formatCurrency(summary.totalCashOut) }}</h2>
+        </div>
+      </div>
+      <ion-button expand="block" fill="outline" (click)="viewReport()" class="ion-margin-top">
+        View Report
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Entries List -->
+  <div class="entries-container">
+    <div *ngFor="let group of groupedEntries" class="date-group">
+      <div class="date-header">
+        <h3 class="date-title">{{ group.displayDate }}</h3>
+        <div class="date-summary">
+          <span class="date-count">{{ group.entries.length }} {{ group.entries.length === 1 ? 'entry' : 'entries' }}</span>
+        </div>
+      </div>
+      
+      <div class="entries-for-date">
+        <div
+          *ngFor="let entry of group.entries"
+          class="entry-card"
+          (click)="viewEntry(entry)"
+        >
+          <div class="entry-content">
+            <!-- Left: Amount and Type -->
+            <div class="entry-left">
+              <ion-icon 
+                [name]="entry.type === 'cash_in' ? 'arrow-down-circle' : 'arrow-up-circle'"
+                [color]="entry.type === 'cash_in' ? 'success' : 'danger'"
+                class="type-icon">
+              </ion-icon>
+              <div class="amount-section">
+                <div class="amount-value">{{ formatCurrency(entry.amount) }}</div>
+                <ion-badge 
+                  [color]="entry.type === 'cash_in' ? 'success' : 'danger'" 
+                  class="type-badge">
+                  {{ entry.type === 'cash_in' ? 'IN' : 'OUT' }}
+                </ion-badge>
+              </div>
+            </div>
+
+            <!-- Right: Details -->
+            <div class="entry-right">
+              <div class="details-row">
+                <div class="detail-item">
+                  <ion-icon name="time-outline" class="detail-icon"></ion-icon>
+                  <span class="detail-text">{{ formatTime(entry.date_time) }}</span>
+                </div>
+                <div *ngIf="entry.party_id" class="detail-item">
+                  <ion-icon name="person-outline" class="detail-icon"></ion-icon>
+                  <span class="detail-text">{{ getPartyName(entry.party_id) }}</span>
+                </div>
+                <div *ngIf="entry.category_id" class="detail-item">
+                  <ion-icon name="pricetag-outline" class="detail-icon"></ion-icon>
+                  <span class="detail-text">{{ getCategoryName(entry.category_id) }}</span>
+                </div>
+                <div class="detail-item">
+                  <ion-icon name="card-outline" class="detail-icon"></ion-icon>
+                  <span class="detail-text">{{ entry.payment_mode | titlecase }}</span>
+                </div>
+              </div>
+              <div *ngIf="entry.remarks" class="remarks-row">
+                <ion-icon name="chatbubble-outline" class="remarks-icon"></ion-icon>
+                <span class="remarks-text">{{ entry.remarks }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-card *ngIf="groupedEntries.length === 0" class="ion-margin-top">
+    <ion-card-content>
+      <ion-text color="medium">
+        <p class="ion-text-center">No entries yet. Create your first entry!</p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="createEntry()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+

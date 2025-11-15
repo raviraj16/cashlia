@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Team Management</ion-title>
+    <ion-buttons slot="end" *ngIf="canManageTeam()">
+      <ion-button (click)="inviteMember()">
+        <ion-icon name="person-add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-list>
+      <ion-item *ngFor="let member of teamMembers">
+        <ion-label>
+          <h2>User ID: {{ member.user_id }}</h2>
+          <p>Role: {{ getRoleLabel(member.role) }}</p>
+          <p *ngIf="member.joined_at">Joined: {{ member.joined_at | date:'short' }}</p>
+        </ion-label>
+        <ion-buttons slot="end" *ngIf="canManageTeam() && member.role !== 'owner'">
+          <ion-button fill="clear" (click)="updateRole(member)">
+            <ion-icon name="create" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger" (click)="removeMember(member)">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+
+    <ion-card *ngIf="teamMembers.length === 0" class="ion-margin-top">
+      <ion-card-content>
+        <ion-text color="medium">
+          <p class="ion-text-center">No team members yet.</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button
+      *ngIf="canManageTeam()"
+      expand="block"
+      (click)="inviteMember()"
+      class="ion-margin-top"
+    >
+      <ion-icon name="person-add" slot="start"></ion-icon>
+      Invite Team Member
+    </ion-button>
+  </div>
+</ion-content>
+

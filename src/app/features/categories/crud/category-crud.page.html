@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Categories</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createCategory()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-list>
+      <ion-item *ngFor="let category of categories; let i = index">
+        <ion-label>
+          <h2>{{ category.name }}</h2>
+          <p>Order: {{ category.display_order }}</p>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button fill="clear" (click)="moveUp(category, i)" [disabled]="i === 0">
+            <ion-icon name="arrow-up" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="moveDown(category, i)" [disabled]="i === categories.length - 1">
+            <ion-icon name="arrow-down" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" (click)="editCategory(category)">
+            <ion-icon name="create" slot="icon-only"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger" (click)="deleteCategory(category)">
+            <ion-icon name="trash" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+
+    <ion-card *ngIf="categories.length === 0" class="ion-margin-top">
+      <ion-card-content>
+        <ion-text color="medium">
+          <p class="ion-text-center">No categories yet. Create your first category!</p>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="createCategory()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+

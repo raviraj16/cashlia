@@ -1,0 +1,157 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEditMode ? 'Edit Entry' : 'New Entry' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ isEditMode ? 'Edit Entry' : 'New Entry' }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <form [formGroup]="entryForm" (ngSubmit)="save()">
+      <!-- Entry Type -->
+      <ion-segment formControlName="type" class="ion-margin-bottom">
+        <ion-segment-button value="cash_in">
+          <ion-label>Cash In</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="cash_out">
+          <ion-label>Cash Out</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <!-- Amount -->
+      <ion-item>
+        <ion-label position="stacked">Amount *</ion-label>
+        <ion-input
+          type="number"
+          formControlName="amount"
+          placeholder="0.00"
+          step="0.01"
+          min="0.01"
+        ></ion-input>
+      </ion-item>
+
+      <!-- Date & Time -->
+      <ion-item>
+        <ion-label position="stacked">Date & Time *</ion-label>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime
+              id="datetime"
+              formControlName="date_time"
+              presentation="date-time"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <!-- Party -->
+      <ion-item>
+        <ion-label position="stacked">Party/Customer</ion-label>
+        <ion-select formControlName="party_id" placeholder="Select party">
+          <ion-select-option value="">None</ion-select-option>
+          <ion-select-option *ngFor="let party of parties" [value]="party.id">
+            {{ party.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Category -->
+      <ion-item>
+        <ion-label position="stacked">Category</ion-label>
+        <ion-select formControlName="category_id" placeholder="Select category">
+          <ion-select-option value="">None</ion-select-option>
+          <ion-select-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Payment Mode -->
+      <ion-item>
+        <ion-label position="stacked">Payment Mode *</ion-label>
+        <ion-select formControlName="payment_mode">
+          <ion-select-option value="cash">Cash</ion-select-option>
+          <ion-select-option value="online">Online</ion-select-option>
+          <ion-select-option value="credit_card">Credit Card</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <!-- Remarks -->
+      <ion-item>
+        <ion-label position="stacked">Remarks</ion-label>
+        <ion-textarea
+          formControlName="remarks"
+          placeholder="Enter remarks (max 1000 characters)"
+          rows="4"
+          maxlength="1000"
+        ></ion-textarea>
+      </ion-item>
+      <ion-text color="medium" class="ion-padding-start">
+        <p>{{ entryForm.get('remarks')?.value?.length || 0 }}/1000 characters</p>
+      </ion-text>
+
+      <!-- Attachment -->
+      <ion-card *ngIf="attachmentPreview">
+        <img [src]="attachmentPreview" alt="Attachment preview" />
+        <ion-button fill="clear" color="danger" (click)="removeAttachment()">
+          <ion-icon name="trash" slot="start"></ion-icon>
+          Remove Attachment
+        </ion-button>
+      </ion-card>
+
+      <ion-item>
+        <ion-label>Attachment</ion-label>
+        <ion-buttons slot="end">
+          <ion-button fill="outline" (click)="capturePhoto()">
+            <ion-icon name="camera" slot="start"></ion-icon>
+            Camera
+          </ion-button>
+          <ion-button fill="outline" (click)="pickFile()">
+            <ion-icon name="images" slot="start"></ion-icon>
+            Gallery
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <!-- Action Buttons -->
+      <div class="ion-margin-top">
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="entryForm.invalid"
+          *ngIf="!isEditMode"
+        >
+          Save
+        </ion-button>
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="entryForm.invalid"
+          *ngIf="isEditMode"
+        >
+          Update
+        </ion-button>
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="saveAndAddNew()"
+          [disabled]="entryForm.invalid"
+          *ngIf="!isEditMode"
+          class="ion-margin-top"
+        >
+          Save & Add New
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>
+

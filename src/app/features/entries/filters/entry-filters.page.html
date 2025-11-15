@@ -1,0 +1,113 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Filters</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <!-- Date Filter -->
+    <ion-item>
+      <ion-label position="stacked">Date Filter</ion-label>
+      <ion-select [(ngModel)]="filters.dateFilter" (ionChange)="onDateFilterChange($event)">
+        <ion-select-option *ngFor="let option of dateFilterOptions" [value]="option.value">
+          {{ option.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Date Range -->
+    <div *ngIf="showDateRange">
+      <ion-item>
+        <ion-label position="stacked">From Date</ion-label>
+        <ion-datetime-button datetime="fromDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime
+              id="fromDate"
+              [(ngModel)]="filters.dateFrom"
+              presentation="date"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">To Date</ion-label>
+        <ion-datetime-button datetime="toDate"></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime
+              id="toDate"
+              [(ngModel)]="filters.dateTo"
+              presentation="date"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+    </div>
+
+    <!-- Entry Type -->
+    <ion-item>
+      <ion-label position="stacked">Entry Type</ion-label>
+      <ion-select multiple [(ngModel)]="selectedEntryTypes" (ionChange)="onEntryTypeChange($event)">
+        <ion-select-option value="cash_in">Cash In</ion-select-option>
+        <ion-select-option value="cash_out">Cash Out</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Payment Mode -->
+    <ion-item>
+      <ion-label position="stacked">Payment Mode</ion-label>
+      <ion-select multiple [(ngModel)]="selectedPaymentModes" (ionChange)="onPaymentModeChange($event)">
+        <ion-select-option value="cash">Cash</ion-select-option>
+        <ion-select-option value="online">Online</ion-select-option>
+        <ion-select-option value="credit_card">Credit Card</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Party -->
+    <ion-item>
+      <ion-label position="stacked">Party/Customer</ion-label>
+      <ion-select multiple [(ngModel)]="selectedParties" (ionChange)="onPartyChange($event)">
+        <ion-select-option *ngFor="let party of parties" [value]="party.id">
+          {{ party.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Category -->
+    <ion-item>
+      <ion-label position="stacked">Category</ion-label>
+      <ion-select multiple [(ngModel)]="selectedCategories" (ionChange)="onCategoryChange($event)">
+        <ion-select-option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Members -->
+    <ion-item>
+      <ion-label position="stacked">Members</ion-label>
+      <ion-select multiple [(ngModel)]="selectedMembers" (ionChange)="onMemberChange($event)">
+        <ion-select-option *ngFor="let member of members" [value]="member.id">
+          {{ member.email }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Action Buttons -->
+    <div class="ion-margin-top">
+      <ion-button expand="block" (click)="applyFilters()">
+        Apply Filters
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="clearFilters()" class="ion-margin-top">
+        Clear Filters
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
+

@@ -1,0 +1,75 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Businesses</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createBusiness()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Businesses</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="businesses-container">
+    <div class="businesses-list">
+      <div
+        *ngFor="let business of businesses"
+        class="business-card"
+        [class.current-business]="isCurrentBusiness(business)"
+        (click)="selectBusiness(business)"
+      >
+        <div class="business-content">
+          <div class="business-main">
+            <div class="business-icon-wrapper">
+              <ion-icon name="business" class="business-icon"></ion-icon>
+            </div>
+            <div class="business-info">
+              <h3 class="business-name">{{ business.name }}</h3>
+            </div>
+          </div>
+          <div class="business-actions" (click)="$event.stopPropagation()">
+            <ion-button fill="clear" size="small" (click)="manageTeam(business, $event)" class="action-btn">
+              <ion-icon name="people-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="editBusiness(business, $event)" class="action-btn">
+              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" color="danger" (click)="deleteBusiness(business, $event)" class="action-btn">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+        <div *ngIf="isCurrentBusiness(business)" class="current-badge">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="createBusiness()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-card *ngIf="businesses.length === 0" class="empty-state">
+      <ion-card-content>
+        <div class="empty-content">
+          <ion-icon name="business-outline" class="empty-icon"></ion-icon>
+          <ion-text color="medium">
+            <p class="ion-text-center">No businesses yet. Create your first business to get started!</p>
+          </ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Security Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>App Lock</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label>
+              <h2>PIN Protection</h2>
+              <p>Require PIN to access app</p>
+            </ion-label>
+            <ion-toggle [(ngModel)]="pinEnabled" (ionChange)="togglePin()"></ion-toggle>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h2>Biometric Authentication</h2>
+              <p>Use fingerprint or face ID</p>
+            </ion-label>
+            <ion-toggle [(ngModel)]="biometricEnabled" (ionChange)="toggleBiometric()"></ion-toggle>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h2>Lock After Inactivity</h2>
+              <p>Automatically lock app after period of inactivity</p>
+            </ion-label>
+            <ion-toggle [(ngModel)]="lockAfterInactivity" (ionChange)="toggleLockAfterInactivity()"></ion-toggle>
+          </ion-item>
+
+          <ion-item *ngIf="lockAfterInactivity">
+            <ion-label>
+              <h2>Inactivity Time (minutes)</h2>
+            </ion-label>
+            <ion-input
+              type="number"
+              [(ngModel)]="inactivityMinutes"
+              (ionChange)="updateInactivityMinutes()"
+              min="1"
+              max="60"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

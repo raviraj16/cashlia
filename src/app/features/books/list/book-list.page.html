@@ -1,0 +1,91 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <div>
+        <div>Books</div>
+        <div *ngIf="currentBusiness" class="subtitle">{{ currentBusiness.name }}</div>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createBook()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">
+        <div>
+          <div>Books</div>
+          <div *ngIf="currentBusiness" class="subtitle">{{ currentBusiness.name }}</div>
+        </div>
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="books-container">
+    <div class="books-list">
+      <div
+        *ngFor="let book of books"
+        class="book-card"
+        [class.current-book]="isCurrentBook(book)"
+        (click)="selectBook(book)"
+      >
+        <div class="book-content">
+          <div class="book-main">
+            <div class="book-icon-wrapper">
+              <ion-icon name="book" class="book-icon"></ion-icon>
+            </div>
+            <div class="book-info">
+              <h3 class="book-name">{{ book.name }}</h3>
+              <div class="book-meta">
+                <span class="book-date">
+                  <ion-icon name="time-outline" class="meta-icon"></ion-icon>
+                  {{ book.updated_at | date:'short' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="book-actions" (click)="$event.stopPropagation()">
+            <ion-button fill="clear" size="small" (click)="editBook(book, $event)" class="action-btn">
+              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" (click)="cloneBook(book, $event)" class="action-btn">
+              <ion-icon name="copy-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" size="small" color="danger" (click)="deleteBook(book, $event)" class="action-btn">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+        <div *ngIf="isCurrentBook(book)" class="current-badge">
+          <ion-icon name="checkmark-circle"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="createBook()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-card *ngIf="books.length === 0" class="empty-state">
+      <ion-card-content>
+        <div class="empty-content">
+          <ion-icon name="book-outline" class="empty-icon"></ion-icon>
+          <ion-text color="medium">
+            <p class="ion-text-center">No books yet. Create your first book to get started!</p>
+          </ion-text>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

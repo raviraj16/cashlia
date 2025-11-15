@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Invite Team Member</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Invite Team Member</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="inviteForm" (ngSubmit)="sendInvite()">
+          <ion-item>
+            <ion-label position="stacked">Email *</ion-label>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Enter email"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Mobile (Optional)</ion-label>
+            <ion-input
+              type="tel"
+              formControlName="mobile"
+              placeholder="Enter mobile number"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Role</ion-label>
+            <ion-select formControlName="role">
+              <ion-select-option value="business_partner">Business Partner</ion-select-option>
+              <ion-select-option value="staff_member">Staff Member</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="inviteForm.invalid"
+            class="ion-margin-top"
+          >
+            Send Invitation
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Invite Link</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ inviteLink }}</p>
+        <ion-button expand="block" fill="outline" (click)="copyInviteLink()" class="ion-margin-top">
+          Copy Link
+        </ion-button>
+        <ion-button expand="block" fill="outline" (click)="shareInviteLink()" class="ion-margin-top">
+          Share Link
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

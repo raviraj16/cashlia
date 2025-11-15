@@ -1,0 +1,10 @@
+<div class="skeleton-container">
+  <div class="skeleton-item" *ngIf="showAvatar">
+    <div class="skeleton-avatar"></div>
+  </div>
+  <div class="skeleton-content">
+    <div class="skeleton-title" *ngIf="showTitle"></div>
+    <div class="skeleton-line" *ngFor="let line of [].constructor(lines)"></div>
+  </div>
+</div>
+

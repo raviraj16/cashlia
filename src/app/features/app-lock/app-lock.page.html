@@ -1,0 +1,42 @@
+<ion-content [fullscreen]="true" class="lock-screen">
+  <div class="lock-container">
+    <ion-icon name="lock-closed" class="lock-icon"></ion-icon>
+    <h1>Cashlia</h1>
+    <p>Enter PIN to unlock</p>
+
+    <div class="pin-display">
+      <ion-icon 
+        *ngFor="let i of [0,1,2,3]" 
+        [name]="pin.length > i ? 'radio-button-on' : 'radio-button-off'"
+        class="pin-dot"
+      ></ion-icon>
+    </div>
+
+    <div class="pin-keypad">
+      <ion-button 
+        *ngFor="let num of [1,2,3,4,5,6,7,8,9]" 
+        (click)="onPinInput(pin + num)"
+        class="pin-button"
+        fill="clear"
+      >
+        {{ num }}
+      </ion-button>
+      <ion-button class="pin-button" fill="clear"></ion-button>
+      <ion-button (click)="onPinInput(pin + '0')" class="pin-button" fill="clear">0</ion-button>
+      <ion-button (click)="onPinInput(pin.slice(0, -1))" class="pin-button" fill="clear">
+        <ion-icon name="backspace"></ion-icon>
+      </ion-button>
+    </div>
+
+    <ion-button 
+      *ngIf="showBiometric" 
+      (click)="unlockWithBiometric()" 
+      fill="clear"
+      class="biometric-button"
+    >
+      <ion-icon name="finger-print"></ion-icon>
+      <span>Use Biometric</span>
+    </ion-button>
+  </div>
+</ion-content>
+

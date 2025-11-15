@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isEditMode ? 'Edit Business' : 'Create Business' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ isEditMode ? 'Edit Business' : 'Create Business' }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{ isEditMode ? 'Edit Business' : 'Create New Business' }}</ion-card-title>
+        <ion-card-subtitle>Enter business details</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form [formGroup]="businessForm" (ngSubmit)="save()">
+          <ion-item>
+            <ion-label position="stacked">Business Name</ion-label>
+            <ion-input
+              type="text"
+              formControlName="name"
+              placeholder="Enter business name"
+            ></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="businessForm.get('name')?.invalid && businessForm.get('name')?.touched">
+            <p class="ion-padding-start">Business name is required (min 2 characters)</p>
+          </ion-text>
+
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="businessForm.invalid"
+            class="ion-margin-top"
+          >
+            {{ isEditMode ? 'Update Business' : 'Create Business' }}
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+

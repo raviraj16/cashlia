@@ -1,0 +1,70 @@
+.lock-screen {
+  --background: var(--ion-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-container {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+
+.lock-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+
+p {
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.pin-display {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.pin-dot {
+  font-size: 1.5rem;
+  color: white;
+}
+
+.pin-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 300px;
+  margin: 2rem auto;
+}
+
+.pin-button {
+  --color: white;
+  font-size: 1.5rem;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.biometric-button {
+  --color: white;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.biometric-button ion-icon {
+  font-size: 2rem;
+}
+
