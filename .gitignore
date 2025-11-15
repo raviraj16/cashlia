@@ -95,4 +95,4 @@ logs/
 *.tmp
 *.temp
 .cache/
-
+.github/
